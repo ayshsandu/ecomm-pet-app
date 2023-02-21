@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
-import { Container, Button, Table }  from 'react-bootstrap';
+// import { Container, Button, Table }  from 'react-bootstrap';
+import { Container, Table, Button } from 'semantic-ui-react';
 
 export default function Admin() {
     useEffect(() => {
