@@ -81,8 +81,8 @@ const App = () => {
   }, []);
   return (
     <>
-    <PetStoreNav />
     <BrowserRouter>
+    <PetStoreNav />
       <Switch>
         <Route path="/" component={Catalog} />
         <Route path="/mycart" component={MyCart} />
