@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { Menu, Container, Button } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, useHistory } from 'react-router-dom';
 import { useAuthContext } from "@asgardeo/auth-react";
 
 import Catalog from './components/Catalog/Catalog.js';
@@ -55,6 +55,8 @@ const RightLoginSignupMenu = () => {
 
 // Component to render the navigation bar
 const PetStoreNav = () => {
+  const history = useHistory();
+
   return (
     <>
     <Menu fixed="top" inverted>
@@ -63,9 +65,9 @@ const PetStoreNav = () => {
           PetStore
         </Menu.Item>
         <Menu.Menu position="right">
-          <Menu.Item href="/" name="Catalog" />
-          <Menu.Item href="/mycart" name="My Cart" />
-          <Menu.Item href="/admin" name="Admin" />
+          <Menu.Item onClick={() => history.push("/")} name="Catalog" />
+          <Menu.Item onClick={() => history.push("/mycart")} name="My Cart" />
+          <Menu.Item onClick={() => history.push("/admin")} name="Admin" />
           <RightLoginSignupMenu />
         </Menu.Menu>
       </Container>
@@ -84,7 +86,7 @@ const App = () => {
     <BrowserRouter>
     <PetStoreNav />
       <Switch>
-        <Route path="/" component={Catalog} />
+        <Route exact path="/" component={Catalog} />
         <Route path="/mycart" component={MyCart} />
         <Route path="/admin" component={Admin} />
       </Switch>
