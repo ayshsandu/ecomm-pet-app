@@ -10,20 +10,19 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <AuthProvider
       config={{
-        signInRedirectURL: "http://localhost:3000",
-        signOutRedirectURL: "http://localhost:3000",
-        clientID: "4Z1bpG7XMMneIZpboIUgEDtPj5ka",
-        baseUrl: "https://api.asgardeo.io/t/ayeshaecomm",
-        scope: ["openid", "profile"],
-        resourceServerURLs: ["https://a302ef70-2e20-4809-a281-8adfc5b8e2f6-dev.e1-us-east-azure.choreoapis.dev/qirz/ecommercerestapi/1.0.0"],
+        signInRedirectURL: process.env.REACT_APP_SIGN_IN_REDIRECT_URL,
+        signOutRedirectURL: process.env.REACT_APP_SIGN_OUT_REDIRECT_URL,
+        clientID: process.env.REACT_APP_CLIENT_ID,
+        baseUrl: process.env.REACT_APP_BASE_URL,
+        scope: process.env.REACT_APP_SCOPE.split(' '),
+        resourceServerURLs: [process.env.REACT_APP_RESOURCE_SERVER_URLS],
       }}
     >
       <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossorigin></script>
       <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js" crossorigin></script>
-      <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+      {/* <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script> */}
       <App />
     </AuthProvider>
-
 );
 
 // If you want to start measuring performance in your app, pass a function

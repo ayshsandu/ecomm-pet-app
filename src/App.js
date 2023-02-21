@@ -59,7 +59,7 @@ const PetStoreNav = () => {
     <>
     <Menu fixed="top" inverted>
       <Container>
-        <Menu.Item as="a" header>
+        <Menu.Item as="a" header  href="/" >
           PetStore
         </Menu.Item>
         <Menu.Menu position="right">
@@ -82,12 +82,19 @@ const App = () => {
   return (
     <>
     <BrowserRouter>
-    <PetStoreNav />
       <Switch>
-        <Route path="/" component={Catalog} />
-        <Route path="/mycart" component={MyCart} />
-        <Route path="/admin" component={Admin} />
+        <Route exact path="/">
+          <Catalog />
+        </Route>
+        <Route path="/mycart">
+          <MyCart />
+        </Route>
+        <Route path="/admin">
+          <Admin />
+        </Route>
       </Switch>
+      <PetStoreNav />
+
     </BrowserRouter>
     </>
   );
