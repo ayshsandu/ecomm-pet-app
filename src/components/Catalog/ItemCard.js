@@ -16,7 +16,7 @@ function ItemCard({ item }) {
             <Card.Content extra>
                 <p>Includes: {item.includes}</p>
                 <p>Intended For: {item.intendedFor}</p>
-                <p>Color: {item.color.join(', ')}</p>
+                <p>Color: {item.color}</p>
                 <p>Material: {item.material}</p>
             </Card.Content>
             <Card.Content extra>
