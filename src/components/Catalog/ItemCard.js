@@ -1,38 +1,33 @@
 import React from 'react';
-import { Card, Icon, Image, Button, Label } from 'semantic-ui-react';
+import { Card, Icon, Image, Button, Label, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-function ItemCard({item }) {
+function ItemCard({ item }) {
     const imageUrl = item.image_url || 'https://via.placeholder.com/150';
 
     return (
         <Card as={Link} to={`/${item.id}`}>
             <Image src={imageUrl} wrapped ui={false} size="small" />
-            <Card.Content className="left aligned">
+            <Card.Content>
                 <Card.Header>{item.title}</Card.Header>
-                <Card.Meta>
-                    <span>{item.author}</span>
-                </Card.Meta>
-                <Card.Description>
-                    {item.description}
-                </Card.Description>
-                {!item.isAvailable ? 
-                (
-                    <Label as='a'>
-                        Borrowed
-                    </Label>
-                ) : (
-                <Label as='a'>
-                    Available
-                </Label>
-                )}
+                <Card.Meta>{item.id}</Card.Meta>
+                <Card.Description>{item.description}</Card.Description>
             </Card.Content>
-            <Card.Content className="right aligned" extra>
-                <a>
-                    <Icon name='user' />
-                    <span>{item.readcount}</span>
-                </a>
-                <Button primary>Info</Button>
+            <Card.Content extra>
+                <p>Includes: {item.includes}</p>
+                <p>Intended For: {item.intendedFor}</p>
+                <p>Color: {item.color.join(', ')}</p>
+                <p>Material: {item.material}</p>
+            </Card.Content>
+            <Card.Content extra>
+                <Grid columns={2}>
+                    <Grid.Column>
+                        <Card.Header color='orange' as='h3'>${item.price}</Card.Header>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Button primary floated='right'>Add to cart</Button>
+                    </Grid.Column>
+                </Grid>
             </Card.Content>
         </Card>
     );

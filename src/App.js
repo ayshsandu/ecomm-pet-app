@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { Menu, Container, Button } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import { useAuthContext } from "@asgardeo/auth-react";
 
 import Catalog from './components/Catalog/Catalog.js';
@@ -23,23 +23,42 @@ const RightLoginSignupMenu = () => {
   // Host the menu content and return it at the end of the function
   let menu;
 
-  // Conditionally render the following two links based on whether the user is logged in or not
+  // Conditionally render the Mycart and Admin links based on whether the user is logged in or not
   if (isLoggedIn) {
-    menu = (
-      <Menu.Item position="right">
-        <Button primary onClick={() => signOut()}>
-          Logout
-        </Button>
-        <Menu.Item>
-          <FontAwesomeIcon icon={faUser} /> Hi!{" "}
-          {state.username ? state.username : ""}
+    if (state.allowedScopes.includes(process.env.REACT_APP_ADD_ITEMS_SCOPE)) {
+      menu = (
+        <Menu.Item position="right">
+          <Menu.Item as={Link} to="/admin" name="Admin" />
+          <Menu.Item as={Link} to="/mycart" name="My Cart" cartItems={{}} />
+          <Menu.Item>
+            <FontAwesomeIcon icon={faUser} />
+            {state.username ? state.username : ""}
+          </Menu.Item>
+          <Button primary onClick={() => signOut()}>
+            Logout
+          </Button>
         </Menu.Item>
-      </Menu.Item>
-    );
+      );
+    } else {
+      menu = (
+        <Menu.Item position="right">
+          <Menu.Item as={Link} to="/mycart" name="My Cart" cartItems={{}} />
+          <Menu.Item>
+            <FontAwesomeIcon icon={faUser} />
+            {state.username ? state.username : ""}
+          </Menu.Item>
+          <Button primary onClick={() => signOut()}>
+            Logout
+          </Button>
+        </Menu.Item>
+      );
+    }
   } else {
     menu = (
       <Menu.Item position="right">
+        {/* pass a callback function to signIn method */}
         <Button primary onClick={() => signIn()}>
+          {/* <Button primary onClick={() => signIn({})}> */}
           Login
         </Button>
         <Menu.Item>
@@ -57,19 +76,18 @@ const RightLoginSignupMenu = () => {
 const PetStoreNav = () => {
   return (
     <>
-    <Menu fixed="top" inverted>
-      <Container>
-        <Menu.Item as="a" header  href="/" >
-          PetStore
-        </Menu.Item>
-        <Menu.Menu position="right">
-          <Menu.Item href="/" name="Catalog" />
-          <Menu.Item href="/mycart" name="My Cart" />
-          <Menu.Item href="/admin" name="Admin" />
-          <RightLoginSignupMenu />
-        </Menu.Menu>
-      </Container>
-    </Menu>
+      <Menu inverted>
+        <Container>
+          <Menu.Item as="a" header href="/" >
+            PetStore
+          </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item as={Link} to="/" name="Catalog" />
+            {/* <Menu.Item href="/admin" name="Admin" /> */}
+            <RightLoginSignupMenu />
+          </Menu.Menu>
+        </Container>
+      </Menu>
     </>
   );
 };
@@ -81,21 +99,20 @@ const App = () => {
   }, []);
   return (
     <>
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/">
-          <Catalog />
-        </Route>
-        <Route path="/mycart">
-          <MyCart />
-        </Route>
-        <Route path="/admin">
-          <Admin />
-        </Route>
-      </Switch>
-      <PetStoreNav />
-
-    </BrowserRouter>
+      <BrowserRouter>
+        <PetStoreNav />
+        <Switch>
+          <Route exact path="/">
+            <Catalog />
+          </Route>
+          <Route path="/mycart">
+            <MyCart />
+          </Route>
+          <Route path="/admin">
+            <Admin />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </>
   );
 }
