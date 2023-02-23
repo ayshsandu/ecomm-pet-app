@@ -1,37 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Input, Card } from 'semantic-ui-react';
 import ItemCard from './ItemCard';
-import { useAuthContext } from "@asgardeo/auth-react";
+import {useAuthContext } from "@asgardeo/auth-react";
 
 function Catelog() {
   const [items, setitems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const baseUrl = "https://a302ef70-2e20-4809-a281-8adfc5b8e2f6-dev.e1-us-east-azure.choreoapis.dev/qirz/ecommercerestapi/1.0.0";
+  const baseUrl = process.env.REACT_APP_RESOURCE_SERVER_URL;
 
-  const { httpRequest } = useAuthContext();
-
+  const { state, httpRequest } = useAuthContext();
+  var path = "/items"; 
+  var isAttachToken = false;
+  var isWithCredentials = false;
+  //* if the user is not authenticated define a separate URL
+  if (state.isAuthenticated) {
+    path = "/itemsforuser";
+    isAttachToken = true;
+    // isWithCredentials = true;
+  }
   const requestConfig = {
     headers: {
       "Access-Control-Allow-Origin": "*"
     },
     method: "GET",
-    url: baseUrl + '/items',
-    attachToken: false,
-    withCredentials: false
+    url: baseUrl + path,
+    attachToken: isAttachToken,
+    withCredentials: isWithCredentials
   };
 
   useEffect(() => {
     async function fetchitems() {
       console.log('baseUrl', baseUrl);
-      //use Axios for the public API invocation
-      // const response = await axios.get(baseUrl + '/items', {
-      //   headers: { "Access-Control-Allow-Origin": "*" }
-      // }, {});
-      // console.log(response.data);
-      // setitems(response.data);
-
-      // Use httpRequest from auth-react library
       const response = await httpRequest(requestConfig);
       console.log(response.data);
       setitems(response.data);
@@ -61,9 +61,9 @@ function Catelog() {
         onChange={handleSearchChange}
         fluid
       />
-      <Card.Group>
+      <Card.Group itemsPerRow={4}>
         {searchResults.map(item => (
-          <ItemCard key={item.id} item={item} />
+          <ItemCard key={item.id} item={item} isAuthenticated ={state.isAuthenticated} loggedInUserId={state.sub} />
         ))}
       </Card.Group>
     </Container>

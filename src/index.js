@@ -15,7 +15,7 @@ root.render(
         clientID: process.env.REACT_APP_CLIENT_ID,
         baseUrl: process.env.REACT_APP_BASE_URL,
         scope: process.env.REACT_APP_SCOPE.split(' '),
-        resourceServerURLs: [process.env.REACT_APP_RESOURCE_SERVER_URLS],
+        resourceServerURLs: [process.env.REACT_APP_RESOURCE_SERVER_URL],
       }}
     >
       <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossorigin></script>

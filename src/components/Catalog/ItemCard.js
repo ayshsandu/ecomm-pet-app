@@ -1,12 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Icon, Image, Button, Label, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { useAuthContext } from '@asgardeo/auth-react';
 
-function ItemCard({ item }) {
-    const imageUrl = item.image_url || 'https://via.placeholder.com/150';
+function ItemCard({ item, isAuthenticated, loggedInUserId }) {
+    const imageUrl = item.imageUrl || 'https://via.placeholder.com/150';
+    const baseUrl = process.env.REACT_APP_RESOURCE_SERVER_URL;
+    const { httpRequest } = useAuthContext();
+    //  define userid and subscription request config
+    var subscription = {
+        userId: loggedInUserId,
+        itemId: item.id
+    }
+
+    const handleLikeClick = async () => {
+        //  define post request config
+        const postRequestConfig = ({
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*,http://localhost:3000"
+            },
+            method: "POST",
+            url: baseUrl + '/subscriptions',
+            data: subscription,
+            withCredentials: false
+
+        });
+
+        httpRequest(postRequestConfig)
+            .then((response) => {
+                console.log(response);
+                item.isSubscribed = true;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    //write a inline component to retun the like button if the user is authenticated
+    const Operators = () => {
+        if (isAuthenticated) {
+            return (
+                <>
+                    <Grid.Column>
+                        {item.isSubscribed ? (
+                            <Button onClick={handleLikeClick}>
+                                <Icon name='thumbs up' />
+                                Follow
+                            </Button>
+                        ) : (
+                            <Button onClick={handleLikeClick}>
+                                <Icon name='thumbs up outline' />
+                                Following
+                            </Button>
+                        )}
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Button primary floated='right'>
+                            Add to cart
+                        </Button>
+                    </Grid.Column>
+                </>
+            );
+        }
+    };
 
     return (
-        <Card as={Link} to={`/${item.id}`}>
+        <Card>
             <Image src={imageUrl} wrapped ui={false} size="small" />
             <Card.Content>
                 <Card.Header>{item.title}</Card.Header>
@@ -20,13 +80,9 @@ function ItemCard({ item }) {
                 <p>Material: {item.material}</p>
             </Card.Content>
             <Card.Content extra>
+                <Card.Header color='orange' as='h3'>${item.price}</Card.Header>
                 <Grid columns={2}>
-                    <Grid.Column>
-                        <Card.Header color='orange' as='h3'>${item.price}</Card.Header>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <Button primary floated='right'>Add to cart</Button>
-                    </Grid.Column>
+                    <Operators />
                 </Grid>
             </Card.Content>
         </Card>

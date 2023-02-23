@@ -16,7 +16,7 @@ export default function Admin() {
         price: 0,
         isAvailable: true
     });
-    const baseUrl = "https://a302ef70-2e20-4809-a281-8adfc5b8e2f6-dev.e1-us-east-azure.choreoapis.dev/qirz/ecommercerestapi/1.0.0";
+    const baseUrl = process.env.REACT_APP_RESOURCE_SERVER_URL;
     const { httpRequest } = useAuthContext();
 
     const requestConfig = {
