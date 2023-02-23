@@ -14,28 +14,50 @@ function ItemCard({ item, isAuthenticated, loggedInUserId }) {
     }
 
     const handleLikeClick = async () => {
-        //  define post request config
-        const postRequestConfig = ({
+        if (item.isSubscribed) {
+          // define delete request config
+          const deleteRequestConfig = {
             headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*,http://localhost:3000"
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*,http://localhost:3000"
+            },
+            method: "DELETE",
+            url: baseUrl + '/subscriptions/' + item.id,
+            withCredentials: false
+          };
+      
+          httpRequest(deleteRequestConfig)
+            .then((response) => {
+              console.log(response);
+              item.isSubscribed = false;
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        } else {
+          // define post request config
+          const postRequestConfig = {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*,http://localhost:3000"
             },
             method: "POST",
             url: baseUrl + '/subscriptions',
             data: subscription,
             withCredentials: false
-
-        });
-
-        httpRequest(postRequestConfig)
+          };
+      
+          httpRequest(postRequestConfig)
             .then((response) => {
-                console.log(response);
-                item.isSubscribed = true;
+              console.log(response);
+              item.isSubscribed = true;
             })
             .catch((error) => {
-                console.error(error);
+              console.error(error);
             });
-    };
+        }
+      };
+      
 
     //write a inline component to retun the like button if the user is authenticated
     const Operators = () => {
@@ -46,12 +68,12 @@ function ItemCard({ item, isAuthenticated, loggedInUserId }) {
                         {item.isSubscribed ? (
                             <Button onClick={handleLikeClick}>
                                 <Icon name='thumbs up' />
-                                Follow
+                                Following
                             </Button>
                         ) : (
                             <Button onClick={handleLikeClick}>
                                 <Icon name='thumbs up outline' />
-                                Following
+                                Follow
                             </Button>
                         )}
                     </Grid.Column>
