@@ -5,7 +5,8 @@ import { state, useAuthContext } from "@asgardeo/auth-react";
 export default function Admin() {
     const [items, setItems] = useState([]);
     const [showAddItemModal, setShowAddItemModal] = useState(false);
-    const [newItem, setNewItem] = useState({
+    const [selectedItem, setSelectedItem] = useState(null);
+    const newLocal = {
         id: "",
         title: "",
         description: "",
@@ -14,11 +15,14 @@ export default function Admin() {
         color: "",
         material: "",
         price: 0,
-        isAvailable: true
-    });
+        isAvailable: true,
+        imageUrl: ""
+    };
+
+    const [newItem, setNewItem] = useState(newLocal);
+
     const baseUrl = process.env.REACT_APP_RESOURCE_SERVER_URL;
     const { httpRequest } = useAuthContext();
-
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": "*"
@@ -46,36 +50,87 @@ export default function Admin() {
         const { name, value } = event.target;
         const newValue = name === 'price' ? Number(value) : value;
         setNewItem((prevNewItem) => ({
-            ...prevNewItem,
-            [name]: newValue
+          ...prevNewItem,
+          [name]: newValue
         }));
-    };
+      
+        if (selectedItem) {
+          setSelectedItem((prevSelectedItem) => ({
+            ...prevSelectedItem,
+            [name]: newValue
+          }));
+        }
+      };
+
+      const handleEditItem = (item) => {
+        setSelectedItem(item);
+        setNewItem(item);
+        setShowAddItemModal(true);
+      };
+
+      const handleAddItem = (item) => {
+        setSelectedItem(null);
+        setNewItem(newLocal);
+        setShowAddItemModal(true);
+        // setShowAddItemModal(true);
+      };
+      
+
+    // const handleAddItemSubmit = async () => {
+    //     const response = [];
+
+    //     const postRequestConfig = ({
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Access-Control-Allow-Origin": "*,http://localhost:3000"
+    //         },
+    //         method: "POST",
+    //         url: baseUrl + '/items',
+    //         data: [newItem],
+    //         withCredentials: false
+
+    //     });
+
+    //     httpRequest(postRequestConfig)
+    //         .then((response) => {
+    //              console.log(response);
+    //              setItems((prevItems) => [...prevItems, response.data[0]]);
+    //              setShowAddItemModal(false);
+    //         })
+    //         .catch((error) => {
+    //              console.error(error);
+    //         });
+    // };
 
     const handleAddItemSubmit = async () => {
-        const response = [];
-
-        const postRequestConfig = ({
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*,http://localhost:3000"
-            },
-            method: "POST",
-            url: baseUrl + '/items',
-            data: [newItem],
-            withCredentials: false
-
-        });
-
-        httpRequest(postRequestConfig)
-            .then((response) => {
-                 console.log(response);
-                 setItems((prevItems) => [...prevItems, response.data[0]]);
-                 setShowAddItemModal(false);
-            })
-            .catch((error) => {
-                 console.error(error);
-            });
-    };
+        const requestConfig = {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*,http://localhost:3000"
+          },
+          method: selectedItem ? "PATCH" : "POST",
+          url: baseUrl + '/items' + (selectedItem ? '/' + selectedItem.id + '/update': ''),
+          data: selectedItem ? selectedItem : [newItem],
+          withCredentials: false
+        };
+      
+        httpRequest(requestConfig)
+          .then((response) => {
+            console.log(response);
+            if (selectedItem) {
+              setItems((prevItems) => prevItems.map((item) => item.id === selectedItem.id ? response.data : item));
+            } else {
+              setItems((prevItems) => [...prevItems, response.data[0]]);
+            }
+            setShowAddItemModal(false);
+            setSelectedItem(null);
+            setNewItem(newLocal);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      };
+      
 
     return (
         <>
@@ -105,17 +160,18 @@ export default function Admin() {
                                 <td>{item.material}</td>
                                 <td>{item.price}</td>
                                 <td>
-                                    <Button variant="primary" size="sm">Edit</Button>&nbsp;
+                                <Button variant="primary" size="sm" onClick={() => handleEditItem(item)}>Edit</Button>&nbsp;
                                     <Button variant="danger" size="sm">Delete</Button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </Table>
-                <Button onClick={() => setShowAddItemModal(true)}>Add Item</Button>
+                <Button onClick={() => {handleAddItem({});}}>Add Item</Button>
             </Container>
             <Modal open={showAddItemModal} onClose = {() => setShowAddItemModal(false)}>
-                <Modal.Header>Add Item</Modal.Header>   
+
+            <Modal.Header>{selectedItem ? 'Edit Item' : 'Add Item'}</Modal.Header>
                 <Modal.Content>
                     <Form>
                     <Form.Field>
@@ -154,7 +210,7 @@ export default function Admin() {
                 </Modal.Content>
                 <Modal.Actions>
                     <Button onClick={() => setShowAddItemModal(false)}>Cancel</Button>
-                    <Button onClick={handleAddItemSubmit}>Add</Button>
+                    <Button onClick={handleAddItemSubmit}>{selectedItem ? 'Save' : 'Add'}</Button>
                 </Modal.Actions>
             </Modal>
         </>
