@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import './App.css';
 //  import './App.scss';
 // import { Nav, Navbar, Container }  from 'react-bootstrap';
@@ -15,16 +15,31 @@ import Admin from './components/Admin/Admin.js';
 
 // Component to render the login/signup/logout menu
 const RightLoginSignupMenu = () => {
-  const { state, signIn, signOut } = useAuthContext();
+  const { state, signIn, signOut, isAuthenticated, getBasicUserInfo } = useAuthContext();
+
+  const [isAuth, setAuth] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+
+  const checkSession = async () => {
+    const auth = await isAuthenticated();
+    if (auth) {
+      const userInfo = await getBasicUserInfo();
+      setUserInfo(userInfo);
+    }
+    setAuth(auth);
+  }
+
+  useEffect(() => {
+    checkSession();
+  }, [state.isAuthenticated]);
+     
 
   // Based on Asgardeo SDK, set a variable like below to check and conditionally render the menu
-  let isLoggedIn = state.isAuthenticated;
-
   // Host the menu content and return it at the end of the function
   let menu;
 
   // Conditionally render the following two links based on whether the user is logged in or not
-  if (isLoggedIn) {
+  if (isAuth) {
     menu = (
       <Menu.Item position="right">
         <Button primary onClick={() => signOut()}>
@@ -32,7 +47,7 @@ const RightLoginSignupMenu = () => {
         </Button>
         <Menu.Item>
           <FontAwesomeIcon icon={faUser} /> Hi!{" "}
-          {state.username ? state.username : ""}
+          {userInfo.username ? userInfo.username : ""}
         </Menu.Item>
       </Menu.Item>
     );
