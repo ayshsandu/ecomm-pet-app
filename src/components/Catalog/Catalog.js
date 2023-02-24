@@ -63,7 +63,7 @@ function Catelog() {
       />
       <Card.Group itemsPerRow={4}>
         {searchResults.map(item => (
-          <ItemCard key={item.id} item={item} isAuthenticated ={state.isAuthenticated} loggedInUserId={state.sub} />
+          <ItemCard key={item.id} cardItem={item} isAuthenticated ={state.isAuthenticated} loggedInUserId={state.sub} />
         ))}
       </Card.Group>
     </Container>
