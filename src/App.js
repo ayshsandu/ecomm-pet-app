@@ -7,7 +7,7 @@ import { Menu, Container, Button } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
-import { useAuthContext } from "@asgardeo/auth-react";
+import { useAuthContext, SecureRoute } from "@asgardeo/auth-react";
 
 import Catalog from './components/Catalog/Catalog.js';
 import MyCart from './components/MyCart/Cart.js';
@@ -110,9 +110,9 @@ const App = () => {
           <Route path="/mycart">
             <MyCart />
           </Route>
-          <Route path="/admin">
+          <SecureRoute path="/admin">
             <Admin />
-          </Route>
+          </SecureRoute>
         </Switch>
       </BrowserRouter>
     </>
