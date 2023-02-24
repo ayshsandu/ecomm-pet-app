@@ -16,7 +16,8 @@ import Admin from './components/Admin/Admin.js';
 // Component to render the login/signup/logout menu
 const RightLoginSignupMenu = () => {
   const { state, signIn, signOut } = useAuthContext();
-  const signUpURL = "https://accounts.asgardeo.io/t/ayeshaecomm/accountrecoveryendpoint/register.do?client_id=" + process.env.REACT_APP_CLIENT_ID + "&sp=" + process.env.REACT_APP_APPLICATION_NAME;
+  const signUpURL = "https://accounts.asgardeo.io/t/ayeshaecomm/accountrecoveryendpoint/register.do?client_id=" 
+  + process.env.REACT_APP_CLIENT_ID + "&sp=" + process.env.REACT_APP_APPLICATION_NAME;
 
   // Based on Asgardeo SDK, set a variable like below to check and conditionally render the menu
   let isLoggedIn = state.isAuthenticated;
