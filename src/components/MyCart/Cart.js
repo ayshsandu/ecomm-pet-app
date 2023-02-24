@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Table, Input, Container } from 'semantic-ui-react';
+import UnderConstruction from './UnderConstruction';
 
 function Cart({ cartItems }) {
     const items = [
@@ -45,7 +46,8 @@ function Cart({ cartItems }) {
 
   return (
     <Container>
-    <Table celled>
+        <UnderConstruction />
+    {/* <Table celled>
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>Name</Table.HeaderCell>
@@ -79,7 +81,7 @@ function Cart({ cartItems }) {
           <Table.HeaderCell>${getTotal()}</Table.HeaderCell>
         </Table.Row>
       </Table.Footer>
-    </Table>
+    </Table> */}
     </Container>
   );
 }
