@@ -31,7 +31,7 @@ const RightLoginSignupMenu = () => {
       menu = (
         <Menu.Item position="right">
           <Menu.Item as={Link} to="/admin" name="Admin" />
-          <Menu.Item as={Link} to="/mycart" name="My Cart" cartItems={{}} />
+          <Menu.Item as={Link} to="/mycart" name="My Cart"/>
           <Menu.Item>
             <FontAwesomeIcon icon={faUser} />
             {state.username ? state.username : ""}
@@ -44,7 +44,7 @@ const RightLoginSignupMenu = () => {
     } else {
       menu = (
         <Menu.Item position="right">
-          <Menu.Item as={Link} to="/mycart" name="My Cart" cartItems={{}} />
+          <Menu.Item as={Link} to="/mycart" name="My Cart"/>
           <Menu.Item>
             <FontAwesomeIcon icon={faUser} />
             {state.username ? state.username : ""}

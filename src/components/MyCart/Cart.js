@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Input, Container } from 'semantic-ui-react';
 import UnderConstruction from './UnderConstruction';
 
-function Cart({ cartItems }) {
+function Cart() {
     const items = [
         {
           id: 1,
