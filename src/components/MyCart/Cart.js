@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Table, Icon, Input, Container, Button } from 'semantic-ui-react';
+import PaymentModal from './PaymentModal';
 
 function Cart({ cart, removeFromCart }) {
   const [quantities, setQuantities] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   const handleQuantityChange = (itemId, event) => {
     const newQuantities = { ...quantities };
@@ -23,9 +25,18 @@ function Cart({ cart, removeFromCart }) {
     return total;
   };
 
+  const handleCheckoutClick = () => {
+    setShowModal(true);
+  };
+
+  const handlePaymentModalClose = () => {
+    setShowModal(false);
+  };
+
   return (
     <Container>
-      {/* Add a checkout button */}
+      <PaymentModal open={showModal} onClose={handlePaymentModalClose} />
+
       <Table celled>
         <Table.Header>
           <Table.Row>
@@ -52,7 +63,7 @@ function Cart({ cart, removeFromCart }) {
               <Table.Cell>${getItemTotal(item)}</Table.Cell>
               <Table.Cell>
                 <Button onClick={() => removeFromCart(item.id)}>
-                  <Icon name="trash" color="red"/>
+                  <Icon name="trash" color="red" />
                 </Button>
               </Table.Cell>
             </Table.Row>
@@ -67,8 +78,10 @@ function Cart({ cart, removeFromCart }) {
           </Table.Row>
         </Table.Footer>
       </Table>
-      <Button floated="right" color='green'>Checkout</Button>
 
+      <Button floated="right" color="green" onClick={handleCheckoutClick}>
+        Checkout
+      </Button>
     </Container>
   );
 }
