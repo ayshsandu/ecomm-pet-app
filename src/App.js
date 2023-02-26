@@ -38,7 +38,7 @@ const App = () => {
               <FontAwesomeIcon icon={faUser} />
               {state.username ? state.username : ""}
             </Menu.Item>
-            <Button primary onClick={handleSignOut()}>
+            <Button primary onClick={handleSignOut}>
               Logout
             </Button>
           </Menu.Item>
@@ -51,7 +51,7 @@ const App = () => {
               <FontAwesomeIcon icon={faUser} />
               {state.username ? state.username : ""}
             </Menu.Item>
-            <Button primary onClick={handleSignOut()}>
+            <Button primary onClick={handleSignOut}>
               Logout
             </Button>
           </Menu.Item>
@@ -77,7 +77,7 @@ const App = () => {
 
     function handleSignOut() {
       localStorage.removeItem('cart.');
-      return () => signOut();
+      signOut();
     }
   }
 
