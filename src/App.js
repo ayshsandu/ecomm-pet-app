@@ -46,7 +46,7 @@ const App = () => {
       } else {
         menu = (
           <Menu.Item position="right">
-            <Menu.Item as={Link} to="/mycart" name="My Cart" content={`Cart (${cart.length})`} icon="cart"/>
+            <Menu.Item as={Link} to="/mycart" name="My Cart" content={`Cart (${cart.length})`} icon="cart" />
             <Menu.Item>
               <FontAwesomeIcon icon={faUser} />
               {state.username ? state.username : ""}
@@ -100,6 +100,11 @@ const App = () => {
     setCart([...cart, item]);
   };
 
+  const removeFromCart = itemId => {
+    var newCart = cart.filter(item => item.id !== itemId);
+    setCart(newCart);
+  }
+
 
   useEffect(() => {
     document.title = 'PetStore';
@@ -113,7 +118,7 @@ const App = () => {
             <Catalog cart={cart} handleAddToCart={addToCart} />
           </Route>
           <Route path="/mycart">
-            <MyCart cart={cart}/>
+            <MyCart cart={cart} removeFromCart={removeFromCart} />
           </Route>
           <SecureRoute path="/admin">
             <Admin />
