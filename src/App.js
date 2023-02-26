@@ -115,7 +115,7 @@ const App = () => {
         <PetStoreNav />
         <Switch>
           <Route exact path="/">
-            <Catalog cart={cart} handleAddToCart={addToCart} />
+            <Catalog cart={cart} handleAddToCart={addToCart} handleRemoveFromCart = {removeFromCart} />
           </Route>
           <Route path="/mycart">
             <MyCart cart={cart} removeFromCart={removeFromCart} />

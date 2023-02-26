@@ -3,7 +3,7 @@ import { Card, Icon, Image, Button, Label, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '@asgardeo/auth-react';
 
-function ItemCard({ cardItem, isAuthenticated, loggedInUserId, cart, handleAddToCart }) {
+function ItemCard({ cardItem, isAuthenticated, loggedInUserId, cart, handleAddToCart, handleRemoveFromCart }) {
   const [item, setStateItem] = useState(cardItem);
   const imageUrl = item.imageUrl || 'https://via.placeholder.com/150';
   const baseUrl = process.env.REACT_APP_RESOURCE_SERVER_URL;
@@ -60,12 +60,18 @@ function ItemCard({ cardItem, isAuthenticated, loggedInUserId, cart, handleAddTo
     }
   };
 
-
   //function to handle Add to card button click
   const handleAddToCartClick = async () => {
-    console.log("Add to card button clicked for item: " + item.id);
+    console.log("Add to cart button clicked for item: " + item.id);
     handleAddToCart(item);
-  }
+  };
+
+  // function to handle Remove from Cart button click
+  const handleRemoveFromCartClick = async () => {
+    console.log("Remove from cart button clicked for item: " + item.id);
+    handleRemoveFromCart(item.id);
+  };
+
   //write a inline component to retun the like button if the user is authenticated
   const Operators = () => {
     if (isAuthenticated) {
@@ -85,9 +91,17 @@ function ItemCard({ cardItem, isAuthenticated, loggedInUserId, cart, handleAddTo
             )}
           </Grid.Column>
           <Grid.Column>
-            <Button primary floated='right' onClick={handleAddToCartClick}>
-              Add to cart
-            </Button>
+            {cart.find((cartItem) => cartItem.id === item.id) ? (
+              <Button color='yellow' floated='green' onClick={handleRemoveFromCartClick}>
+                <Icon name='cart arrow down' />
+                Remove
+              </Button>
+            ) : (
+              <Button primary floated='right' onClick={handleAddToCartClick}>
+                <Icon name='cart plus' />
+                Add to Cart
+              </Button>
+            )}
           </Grid.Column>
         </>
       );

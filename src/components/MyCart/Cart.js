@@ -25,6 +25,7 @@ function Cart({ cart, removeFromCart }) {
 
   return (
     <Container>
+      {/* Add a checkout button */}
       <Table celled>
         <Table.Header>
           <Table.Row>
@@ -66,6 +67,8 @@ function Cart({ cart, removeFromCart }) {
           </Table.Row>
         </Table.Footer>
       </Table>
+      <Button floated="right" color='green'>Checkout</Button>
+
     </Container>
   );
 }

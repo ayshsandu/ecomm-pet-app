@@ -3,7 +3,7 @@ import { Container, Input, Card, Button } from 'semantic-ui-react';
 import ItemCard from './ItemCard';
 import { useAuthContext } from "@asgardeo/auth-react";
 
-function Catelog({cart, handleAddToCart}) {
+function Catelog({cart, handleAddToCart, handleRemoveFromCart}) {
 
   const [items, setitems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -61,10 +61,15 @@ function Catelog({cart, handleAddToCart}) {
         onChange={handleSearchChange}
         fluid
       />
-      <Button content={`Cart (${cart.length})`} icon="cart" labelPosition="right" onClick={() => console.log(cart)} />
+      {/* <Button content={`Cart (${cart.length})`} icon="cart" labelPosition="right" onClick={() => console.log(cart)} /> */}
       <Card.Group itemsPerRow={4}>
         {searchResults.map(item => (
-          <ItemCard cardItem={item} isAuthenticated={state.isAuthenticated} loggedInUserId={state.sub} cart={cart} handleAddToCart={handleAddToCart} />
+          <ItemCard cardItem={item} 
+          isAuthenticated={state.isAuthenticated} 
+          loggedInUserId={state.sub} 
+          cart={cart} 
+          handleAddToCart={handleAddToCart} 
+          handleRemoveFromCart={handleRemoveFromCart} />
         ))}
       </Card.Group>
     </Container>
