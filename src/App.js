@@ -51,7 +51,7 @@ const App = () => {
               <FontAwesomeIcon icon={faUser} />
               {state.username ? state.username : ""}
             </Menu.Item>
-            <Button primary onClick={() => signOut()}>
+            <Button primary onClick={handleSignOut()}>
               Logout
             </Button>
           </Menu.Item>
