@@ -3,9 +3,8 @@ import { Card, Icon, Image, Button, Label, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '@asgardeo/auth-react';
 
-function ItemCard({ cardItem, isAuthenticated, loggedInUserId }) {
+function ItemCard({ cardItem, isAuthenticated, loggedInUserId, cart, handleAddToCart }) {
   const [item, setStateItem] = useState(cardItem);
-
   const imageUrl = item.imageUrl || 'https://via.placeholder.com/150';
   const baseUrl = process.env.REACT_APP_RESOURCE_SERVER_URL;
   const { httpRequest } = useAuthContext();
@@ -62,6 +61,11 @@ function ItemCard({ cardItem, isAuthenticated, loggedInUserId }) {
   };
 
 
+  //function to handle Add to card button click
+  const handleAddToCartClick = async () => {
+    console.log("Add to card button clicked for item: " + item.id);
+    handleAddToCart(item);
+  }
   //write a inline component to retun the like button if the user is authenticated
   const Operators = () => {
     if (isAuthenticated) {
@@ -81,7 +85,7 @@ function ItemCard({ cardItem, isAuthenticated, loggedInUserId }) {
             )}
           </Grid.Column>
           <Grid.Column>
-            <Button primary floated='right'>
+            <Button primary floated='right' onClick={handleAddToCartClick}>
               Add to cart
             </Button>
           </Grid.Column>

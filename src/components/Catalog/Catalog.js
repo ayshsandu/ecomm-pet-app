@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Input, Card } from 'semantic-ui-react';
+import { Container, Input, Card, Button } from 'semantic-ui-react';
 import ItemCard from './ItemCard';
-import {useAuthContext } from "@asgardeo/auth-react";
+import { useAuthContext } from "@asgardeo/auth-react";
 
-function Catelog() {
+function Catelog({cart, handleAddToCart}) {
+
   const [items, setitems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const baseUrl = process.env.REACT_APP_RESOURCE_SERVER_URL;
 
   const { state, httpRequest } = useAuthContext();
-  var path = "/items"; 
+  var path = "/items";
   var isAttachToken = false;
   var isWithCredentials = false;
   //* if the user is not authenticated define a separate URL
@@ -51,7 +52,6 @@ function Catelog() {
     setSearchTerm(event.target.value);
   };
 
-  // show book list
   return (
     <Container>
       <Input
@@ -61,14 +61,14 @@ function Catelog() {
         onChange={handleSearchChange}
         fluid
       />
+      <Button content={`Cart (${cart.length})`} icon="cart" labelPosition="right" onClick={() => console.log(cart)} />
       <Card.Group itemsPerRow={4}>
         {searchResults.map(item => (
-          <ItemCard key={item.id} cardItem={item} isAuthenticated ={state.isAuthenticated} loggedInUserId={state.sub} />
+          <ItemCard cardItem={item} isAuthenticated={state.isAuthenticated} loggedInUserId={state.sub} cart={cart} handleAddToCart={handleAddToCart} />
         ))}
       </Card.Group>
     </Container>
   );
-
 }
 
 export default Catelog;
