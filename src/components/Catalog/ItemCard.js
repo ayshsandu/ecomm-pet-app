@@ -32,6 +32,7 @@ function ItemCard({ cardItem, isAuthenticated, loggedInUserId, cart, handleAddTo
         .then((response) => {
           console.log(response);
           setStateItem((prevState) => ({ ...prevState, isSubscribed: false }));
+          cardItem.isSubscribed = false;
         })
         .catch((error) => {
           console.error(error);
@@ -53,6 +54,7 @@ function ItemCard({ cardItem, isAuthenticated, loggedInUserId, cart, handleAddTo
         .then((response) => {
           console.log(response);
           setStateItem((prevState) => ({ ...prevState, isSubscribed: true }));
+          cardItem.isSubscribed = true;
         })
         .catch((error) => {
           console.error(error);
