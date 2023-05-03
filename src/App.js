@@ -15,7 +15,8 @@ const App = () => {
   // Define cart and add to cart variables to pass to the MyCart component
   // const [userId, setUserId] = useState();
   const [cart, setCart] = useState([]);
-  const { state, signIn, signOut } = useAuthContext();
+  const { state, signIn, signOut, getBasicUserInfo } = useAuthContext();
+  const [ loggedInUserDisplayValue, setLoggedInUserDisplay] = useState("")
 
   // Component to render the login/signup/logout menu
   const RightLoginSignupMenu = () => {
@@ -29,6 +30,14 @@ const App = () => {
     let menu;
     // Conditionally render the Mycart and Admin links based on whether the user is logged in or not
     if (isLoggedIn) {
+      getBasicUserInfo().then((response) => {
+        console.log(response);
+        setLoggedInUserDisplay(response.email? response.email : response.username);
+        debugger;
+        console.log(loggedInUserDisplayValue);
+      }).catch((error) => {
+        console.error(error);
+      });
       if (state.allowedScopes.includes(process.env.REACT_APP_ADD_ITEMS_SCOPE)) {
         menu = (
           <Menu.Item position="right">
@@ -36,7 +45,7 @@ const App = () => {
             <Menu.Item as={Link} to="/mycart" content={`Cart (${cart.length})`} icon="cart" />
             <Menu.Item>
               <FontAwesomeIcon icon={faUser} />
-              {state.username ? state.username : ""}
+              {loggedInUserDisplayValue}
             </Menu.Item>
             <Button primary onClick={handleSignOut}>
               Logout
@@ -49,7 +58,7 @@ const App = () => {
             <Menu.Item as={Link} to="/mycart" content={`Cart (${cart.length})`} icon="cart" />
             <Menu.Item>
               <FontAwesomeIcon icon={faUser} />
-              {state.username ? state.username : ""}
+              {loggedInUserDisplayValue}
             </Menu.Item>
             <Button primary onClick={handleSignOut}>
               Logout
