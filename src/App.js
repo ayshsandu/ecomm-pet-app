@@ -16,7 +16,7 @@ const App = () => {
   // const [userId, setUserId] = useState();
   const [cart, setCart] = useState([]);
   const { state, signIn, signOut, getBasicUserInfo } = useAuthContext();
-  const [ loggedInUserDisplayValue, setLoggedInUserDisplay] = useState("")
+  const [loggedInUserDisplayValue, setLoggedInUserDisplay] = useState("")
 
   // Component to render the login/signup/logout menu
   const RightLoginSignupMenu = () => {
@@ -31,10 +31,7 @@ const App = () => {
     // Conditionally render the Mycart and Admin links based on whether the user is logged in or not
     if (isLoggedIn) {
       getBasicUserInfo().then((response) => {
-        console.log(response);
-        setLoggedInUserDisplay(response.email? response.email : response.username);
-        debugger;
-        console.log(loggedInUserDisplayValue);
+        setLoggedInUserDisplay(response.email ? response.email : response.username);
       }).catch((error) => {
         console.error(error);
       });
@@ -125,7 +122,7 @@ const App = () => {
 
   useEffect(() => {
     document.title = 'PetStore';
-    if(localStorage.getItem('cart.')){
+    if (localStorage.getItem('cart.')) {
       setCart(JSON.parse(localStorage.getItem('cart.')));
     }
   }, []);
