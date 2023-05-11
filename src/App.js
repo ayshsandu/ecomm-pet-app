@@ -9,6 +9,7 @@ import { useAuthContext, SecureRoute } from "@asgardeo/auth-react";
 import Catalog from './components/Catalog/Catalog.js';
 import MyCart from './components/MyCart/Cart.js';
 import Admin from './components/Admin/Admin.js';
+import Footer from './components/Footer.js';
 
 // Main app component
 const App = () => {
@@ -94,7 +95,7 @@ const App = () => {
         <Menu inverted>
           <Container>
             <Menu.Item as="a" header href="/" >
-              PetStore
+                Snout & Paws Shop - Pet products for your furry friends
             </Menu.Item>
             <Menu.Menu position="right">
               <Menu.Item as={Link} to="/" name="Catalog" />
@@ -128,20 +129,25 @@ const App = () => {
   }, []);
   return (
     <>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <BrowserRouter>
-        <PetStoreNav />
-        <Switch>
-          <Route exact path="/">
-            <Catalog cart={cart} handleAddToCart={addToCart} handleRemoveFromCart={removeFromCart} />
-          </Route>
-          <Route path="/mycart">
-            <MyCart cart={cart} removeFromCart={removeFromCart} />
-          </Route>
-          <SecureRoute path="/admin">
-            <Admin />
-          </SecureRoute>
-        </Switch>
+        <div style={{ flex: 1 }}>
+          <PetStoreNav />
+          <Switch>
+            <Route exact path="/">
+              <Catalog cart={cart} handleAddToCart={addToCart} handleRemoveFromCart={removeFromCart} />
+            </Route>
+            <Route path="/mycart">
+              <MyCart cart={cart} removeFromCart={removeFromCart} />
+            </Route>
+            <SecureRoute path="/admin">
+              <Admin />
+            </SecureRoute>
+          </Switch>
+        </div>
+        <Footer />
       </BrowserRouter>
+    </div>
     </>
   );
 }
