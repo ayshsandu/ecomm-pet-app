@@ -95,7 +95,10 @@ const App = () => {
         <Menu inverted>
           <Container>
             <Menu.Item as="a" header href="/" >
-                Snout & Paws Shop - Pet products for your furry friends
+              <div>
+                <h3 style={{ margin: 0 }}>Snout & Paws Shop</h3>
+                <p style={{ margin: 0 }}>Pet products for your furry friends</p>
+              </div>
             </Menu.Item>
             <Menu.Menu position="right">
               <Menu.Item as={Link} to="/" name="Catalog" />
@@ -130,24 +133,24 @@ const App = () => {
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <BrowserRouter>
-        <div style={{ flex: 1 }}>
-          <PetStoreNav />
-          <Switch>
-            <Route exact path="/">
-              <Catalog cart={cart} handleAddToCart={addToCart} handleRemoveFromCart={removeFromCart} />
-            </Route>
-            <Route path="/mycart">
-              <MyCart cart={cart} removeFromCart={removeFromCart} />
-            </Route>
-            <SecureRoute path="/admin">
-              <Admin />
-            </SecureRoute>
-          </Switch>
-        </div>
-        <Footer />
-      </BrowserRouter>
-    </div>
+        <BrowserRouter>
+          <div style={{ flex: 1 }}>
+            <PetStoreNav />
+            <Switch>
+              <Route exact path="/">
+                <Catalog cart={cart} handleAddToCart={addToCart} handleRemoveFromCart={removeFromCart} />
+              </Route>
+              <Route path="/mycart">
+                <MyCart cart={cart} removeFromCart={removeFromCart} />
+              </Route>
+              <SecureRoute path="/admin">
+                <Admin />
+              </SecureRoute>
+            </Switch>
+          </div>
+          <Footer />
+        </BrowserRouter>
+      </div>
     </>
   );
 }
